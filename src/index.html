@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="../assets/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,34 +10,88 @@
       content="A modern React library for creating a flexible and extensible chatbot."
     />
     <link rel="apple-touch-icon" href="/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <title>Marriott Front Desk Assistant</title>
+    <style>
+        body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React ChatBotify</title>
-  </head>
-  <body>
-    <div id="root"></div>
+#root {
+    display: flex;
+    width: 90%;
+    max-width: 1200px; /* Use a max-width in pixels for better control */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex-direction: row;
+}
+
+.avatar-container {
+    flex: 1;
+    padding-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0; /* Prevent container from collapsing */
+}
+
+.avatar {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.chatbot-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+}
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            #root {
+                flex-direction: column; /* Stack on mobile */
+                align-items: center;
+                padding: 10px;
+            }
+
+            .avatar-container {
+                padding-left: 0;
+                padding-top: 20px; /* Space between chat and avatar on mobile */
+            }
+
+            .avatar {
+                max-width: 150px;
+                max-height: 150px;
+            }
+
+            .chatbot-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="chatbot-container">
+            {/* The ChatBot component will be rendered here */}
+        </div>
+        <div class="avatar-container">
+            <img src="../assets/avatar.png" alt="Human Avatar" class="avatar" />
+        </div>
+    </div>
     <script type="module" src="./devIndex.tsx"></script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+</body>
 </html>

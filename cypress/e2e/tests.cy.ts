@@ -15,8 +15,8 @@ describe("Chat Bot Test Suite", () => {
 	});
 
 	it("Sends name and verifies bot reply", () => {
-		cy.get(".rcb-chat-input-textarea").type("Tan Jin{enter}");
-		cy.get(".rcb-bot-message").contains("Hey Tan Jin!").should("be.visible");
+		cy.get(".rcb-chat-input-textarea").type("Front Desk Assistnt{enter}");
+		cy.get(".rcb-bot-message").contains("Hey!").should("be.visible");
 		cy.get(".rcb-bot-message").contains("Before we proceed").should("be.visible");
 	});
 

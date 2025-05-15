@@ -98,8 +98,6 @@ A full documentation (along with a [**live playground**](https://react-chatbotif
 
 [**Examples**](https://react-chatbotify.com/docs/examples/basic_form/) on the website are also run on a live editor so feel free to explore to your heart's content!
 
-### Team
-* [Tan Jin](https://github.com/tjtanjin)
 
 ### Contributing
 If you are looking to contribute, please refer to the [**Contributing Guide**](https://github.com/tjtanjin/react-chatbotify/blob/main/CONTRIBUTING.md). A special section has also been added for [**Hacktoberfest**](https://hacktoberfest.com/) participants!
