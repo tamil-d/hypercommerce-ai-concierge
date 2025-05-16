@@ -31,3 +31,6 @@ yarn-error.log*
 
 # temp file generated for ssr test
 ./ssr/ssrTestIndexNoCssImport.js
+/.husky
+/.idea
+/.husky
