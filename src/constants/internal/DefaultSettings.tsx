@@ -20,8 +20,8 @@ import notificationSound from "../../assets/notification_sound.wav";
 // default settings provided to the bot
 export const DefaultSettings: Settings = {
 	general: {
-		primaryColor: "#42b0c5",
-		secondaryColor: "#491d8d",
+		primaryColor: "#6e6e6e",
+		secondaryColor: "#b0b0b0",
 		fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', " +
 			"'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', " +
 			"sans-serif",
@@ -41,9 +41,7 @@ export const DefaultSettings: Settings = {
 	},
 	header: {
 		title: (
-			<div style={{cursor: "pointer", margin: 0, fontSize: 20, fontWeight: "bold"}} onClick={
-				() => window.open("https://github.com/tjtanjin/")
-			}>
+			<div style={{cursor: "pointer", margin: 0, fontSize: 20, fontWeight: "bold"}} >
 				Concierge Assistant
 			</div>
 		),
@@ -136,9 +134,12 @@ export const DefaultSettings: Settings = {
 	},
 	footer: {
 		text: (
-			<div style={{cursor: "pointer", display: "flex", flexDirection: "row", alignItems: "center", columnGap: 3}} 
-				onClick={() => window.open("https://react-chatbotify.com")}
-			>
+			<div style={{
+				cursor: "pointer", 
+				display: "flex", 
+				flexDirection: "row", 
+				alignItems: "center", 
+				columnGap: 3}} >
 				<span key={0}>Powered By </span>
 				<div
 					key={1}
