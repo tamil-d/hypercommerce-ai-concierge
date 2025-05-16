@@ -23,9 +23,9 @@ function App() {
 		start: {
 			message: (params) => {
 				const messages = [
-					"Hi I am your AI Concierge !" ,
-					"I see you have a reservation with us today." ,
-					"Do you wish to checkin ?"
+					"Hi I am your Bonvoy AI Concierge!" ,
+					"You have an upcoming Reservation (1234567) at the Bethesda Marriott" ,
+					"Do you wish to check in?"
 				];
 				
 				messages.forEach((msg, index) => {
@@ -44,7 +44,7 @@ function App() {
 		},
 
 		capture_check_in_request: {
-			options: ["Yes", "May be Later"],
+			options: ["Yes", "Maybe Later"],
 			chatDisabled: true,
 			path: (params) => {
 				if (params.userInput == 'Yes') {
@@ -59,8 +59,9 @@ function App() {
 			message: (params) => {
 				const messages = [
 					"Here are your check-in details:",
-					"The card on file I have is a VISA card ending with 5 6 7 8",
-					"You asked for a Non-Smoking, Near Elevator as a preference",
+					"Check in time: 3:00pm",
+					"Card on file: VISA ; ending with 5678; 12/28",
+					"Room preference: King Room, Near Elevator, Extra Pillows",
 					"Looks like we need to verify your Photo ID",
 					"We have sent a verification link to your registered mobile",
 					"Let us know once you have completed the verification!!"
@@ -129,6 +130,8 @@ function App() {
 					"You're all set! ",
 					"I added the mobile key to your Bonvoy App",
 					"Your Room 1 5 0 2. ",
+					"Thank you for being a Platinum Elite Member!! ",
+					"We hope you enjoy your welcome gift basket in your room!",
 				];
 	
 				messages.forEach((msg, index) => {
