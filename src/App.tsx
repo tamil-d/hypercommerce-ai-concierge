@@ -9,9 +9,29 @@ function App() {
 	// restore to default state before running selenium tests (or update the test cases if necessary)!
 	const flow: Flow = {
 		start: {
-			message: "Hi I am your AI Concierge !" +
-					"\nYou have a Reservation: 1234567" +
-					"\nDo you wish to checkin ?",
+			message: (params) => {
+				const messages = [
+					"Hi I am your AI Concierge !" ,
+					"You have a Reservation: 1234567" ,
+					"Do you wish to checkin ?"
+				];
+				
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+	
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_check_in_request");
+							}, 1000); // Optional buffer after last message
+						}
+					}, index * 800);
+				});
+			},			
+		},
+
+		capture_check_in_request: {
 			options: ["Yes", "May be Later"],
 			chatDisabled: true,
 			path: (params) => {
@@ -22,33 +42,63 @@ function App() {
 				}
 			},
 		},
+
 		show_checkin_details: {
-			message: () =>
-				"Here are your check-in details:\n" +
-				"- Card on file: **** 5678\n" +
-				"- Room preference: King Room, Non-Smoking, Near Elevator\n" +
-				"Please verify your ID here:",
-			component: (
-				<div>
-					<a href="https://api.id.me/en/session/new" target="_blank" rel="noopener noreferrer">
-						https://a.id.me/uahg=
-					</a>
-				</div>
-			),
-			transition: {duration: 2},
-			path: "user_acknowledges",
+			message: (params) => {
+				const messages = [
+					"Here are your check-in details:",
+					"Card on file: VISA ; ending with 5678; 12/28",
+					"Room preference: King Room, Non-Smoking, Near Elevator",
+					"Looks like we need to verify your Photo ID",
+					"We have sent a verification link to your registered mobile",
+					"Let us know once you have completed the verification!!"
+				];
+				
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+	
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_i_am_done");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 800);
+				});
+			},
 		},
 	
-		user_acknowledges: {
-			message: "Let me know once you've completed the verification.",
+		capture_i_am_done: {
 			options: ["I'm Done !!!"],
 			chatDisabled: true,
 			path: "show_room_assignment",
 		},
-
 		show_room_assignment: {
-			message: "You're all set! Room #504, It's a Deluxe King." +
-					 "\nDo you any additional preferences? ",
+			message: (params) => {
+				const messages = [
+					"Verification Completed successfully...",
+					"You're all set! Room #504, It's a Deluxe King." ,
+					 "Do you any additional preferences? "
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+	
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("check_box_room_preference_capture");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 800);
+				});
+			},
+			
+		},
+
+		check_box_room_preference_capture: {
 			checkboxes: {items: ["High Floor", "Low Floor", "Near Elevator", "Lake View"], min:0, max: 3},
 			function: (params: Params) => 
 				alert(`Let me check availability based on your preferences...\n ${JSON.stringify(params.userInput)}!`),
@@ -57,140 +107,42 @@ function App() {
 		},
 		
 		check_availability: {
-			message: "\nGood news! I found a room with your preferences. Assigning it now...." +
-					 "\nYou're all set! Room #1502. Here's your mobile key 🔑",
-			function: () => console.log("Checking availability..."),
-			path: "final_greeting",
+			
+			message: (params) => {
+				const messages = [
+					"Good news! I found a room with your preferences. Assigning it now....",
+					"You're all set! Room #1502. Here's your mobile key 🔑",
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+	
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("loop");
+							}, 1000); // Optional buffer after last message
+						}
+					}, index * 800);
+				});
+			},
 		},
-		
-		final_greeting: {
-			message: "Is there anything else I can help you with?",
+
+		ask_what_else_to_help: {
+			message: "No problem! Is there anything else I can help you with?",
 			path: "loop",
 		},
-			
 	
-		proceed_to_check_in: {
-			message: () => "Let's Begin the check-in process !!!"
-		},
-		ask_what_else_to_help: {
-			message: () => "Ok !!\n" + 
-			"What else can I help with?"
-		},
-		ask_token: {
-			message: () => "Before we proceed, we need to verify your profile id, "
-             + "Enter your 6 digit profile id",
-			isSensitive: true,
-			path: (params: Params) => {
-				if (params.userInput.length !== 6) {
-					return "incorrect_answer"
-				} else {
-					return "ask_age_group";
-				}
-			},
-		},
-		ask_age_group: {
-			message: () => `Your account got verified, May i know your age group?`,
-			options: ["child", "teen", "adult"],
-			chatDisabled: true,
-			path: () => "ask_math_question",
-		},
-		ask_math_question: {
-			message: (params: Params) => {
-				if (params.prevPath == "incorrect_answer") {
-					return;
-				}
-				return `I see you're a ${params.userInput}. Let's do a quick test! What is 1 + 1?`
-			},
-			path: (params: Params) => {
-				if (params.userInput != "2") {
-					return "incorrect_answer"
-				} else {
-					return "ask_favourite_color";
-				}
-			},
-		},
-		ask_favourite_color: {
-			message: "Great Job! What is your favourite color?",
-			path: "ask_favourite_pet"
-		},
-		ask_favourite_pet: {
-			message: "Interesting! Pick any 2 pets below.",
-			checkboxes: {items: ["Dog", "Cat", "Rabbit", "Hamster"], min:2, max: 2},
-			function: (params: Params) => alert(`You picked: ${JSON.stringify(params.userInput)}!`),
-			chatDisabled: true,
-			path: "ask_height",
-		},
-		ask_height: {
-			message: "What is your height (cm)?",
-			path: async (params: Params) => {
-				if (isNaN(Number(params.userInput))) {
-					await params.injectMessage("Height needs to be a number!");
-					return;
-				}
-				return "ask_weather";
-			}
-		},
-		ask_weather: {
-			message: (params: Params) => {
-				if (params.prevPath == "incorrect_answer") {
-					return;
-				}
-				return "What's my favourite color? Click the button below to find out my answer!"
-			},
-			component: (
-				<div style={{
-					width: "100%",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					marginTop: 10
-				}}>
-					<button
-						className="secret-fav-color"
-						onClick={() => alert("black")}>
-						Click me!
-					</button>
-				</div>
-			),
-			path: async (params: Params) => {
-				if (params.userInput.toLowerCase() != "black") {
-					return "incorrect_answer"
-				} else {
-					await params.toggleChatWindow(false);
-					return "close_chat";
-				}
-			},
-		},
-		close_chat: {
-			message: "I went into hiding but you found me! Ok tell me, what's your favourite food?",
-			path: "ask_image"
-		},
-		ask_image: {
-			message: (params: Params) =>
-				`${params.userInput}? Interesting. Could you share an image of that?`,
-			file: (params: Params) => console.log(params.files),
-			function: (params: Params) =>
-				params.showToast("Image is uploaded successfully!"),
-			path: "end",
-		},
-		end: {
-			message: "Thank you for sharing! See you again!",
-			path: "loop"
-		},
 		loop: {
-			message: (params: Params) => {
-				// sends the message half a second later to facilitate testing of new message prompt
-				setTimeout(async () => {
-					await params.injectMessage("You have reached the end of the conversation!");
-				}, 500)
+			message: (params) => {
+				setTimeout(() => {
+					params.injectMessage("I'm here if you need anything else!");
+				}, 500);
 			},
-			path: "loop"
+			path: "loop",
 		},
-		incorrect_answer: {
-			message: "Your answer is incorrect, try again!",
-			transition: {duration: 0},
-			path: (params: Params) => params.prevPath
-		},
+	
 	};
 
 	return (
