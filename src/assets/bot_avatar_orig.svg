@@ -1,0 +1,35 @@
+<svg
+  width="400"
+  height="600"
+  viewBox="0 0 400 600"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Hair -->
+  <ellipse cx="200" cy="110" rx="70" ry="80" fill="#6C584C"/>
+  <!-- Ear -->
+  <ellipse cx="270" cy="170" rx="18" ry="22" fill="#F9D7B9"/>
+  <!-- Neck -->
+  <rect x="180" y="180" width="40" height="40" rx="15" fill="#F9D7B9"/>
+  <!-- Collar -->
+  <polygon points="160,220 200,200 240,220 200,250" fill="#FFFFFF"/>
+  <!-- Suit Jacket -->
+  <path
+    d="M120 240 Q110 400 140 560 Q200 590 260 560 Q290 400 280 240 Q200 220 120 240"
+    fill="#393939"
+  />
+  <!-- Shirt -->
+  <rect x="170" y="220" width="60" height="100" rx="10" fill="#FFFFFF"/>
+  <!-- Left Arm -->
+  <rect x="80" y="320" width="60" height="160" rx="30" fill="#393939" transform="rotate(-15 80 320)"/>
+  <!-- Right Arm -->
+  <rect x="260" y="320" width="60" height="160" rx="30" fill="#393939" transform="rotate(15 320 320)"/>
+  <!-- Clipboard -->
+  <rect x="130" y="300" width="140" height="100" rx="10" fill="#D9D9D9" stroke="#8C8C8C" stroke-width="3"/>
+  <circle cx="260" cy="310" r="4" fill="#8C8C8C"/>
+  <!-- Hands -->
+  <ellipse cx="150" cy="400" rx="18" ry="26" fill="#F9D7B9"/>
+  <ellipse cx="250" cy="400" rx="18" ry="26" fill="#F9D7B9"/>
+  <!-- Name Badge -->
+  <rect x="230" y="260" width="40" height="12" rx="3" fill="#E8C17A"/>
+</svg>
