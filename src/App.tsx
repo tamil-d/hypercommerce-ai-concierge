@@ -1,7 +1,6 @@
 import React, { useCallback , useEffect, useState } from "react";
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
-import { Params } from "./types/Params";
 import ChatBotProvider from "./context/ChatBotContext"; 
 
 // Speech synthesis utility
@@ -99,6 +98,109 @@ function App() {
 					"Check in time: 3:00pm",
 					"Room preference: King Room, Near Elevator, Extra Pillows",
 					"The card on file I have is a VISA card ending with 5 6 7 8",
+					"Do you wish to change the card on file?"
+				];
+				
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_change_or_use_credit_card");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+		},
+		capture_change_or_use_credit_card: {
+			options: ["Change", "No"],
+			chatDisabled: true,
+			path: (params) => {
+				if (params.userInput == 'No') {
+					return "show_checkin_details_ID_verify";
+				} else {
+					return "show_credit_card_form_for_chat";
+				}
+			},
+		},
+		show_credit_card_form_for_chat: {
+			message: "Here is the payment info to be shown upgraded one",
+			component: (
+				<div style={{
+					width: "100%",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					marginTop: 10
+				}}>
+					<form action="" method="post">
+						<div className="card-number">
+							<label htmlFor="CardNumber">Card Number</label>
+							<div className="input-container">
+								<input className="" id="CardNumber" type="tel" name="CardNumber" />
+								<div className="input-secure"></div>
+							</div>
+						</div>
+						<div className="expiration-date">
+							<label htmlFor="ExpirationDate">Expiration Date</label>
+							<div className="input-container">
+								<input className="required" id="ExpirationDate" type="tel" name="ExpirationDate"/>
+							</div>
+						</div>
+						<div className="security-code">
+							<label htmlFor="SecurityCode">Security Code</label>
+							<div className="input-container">
+								<input className="padding" id="SecurityCode"/>
+								<div className="input-secure"></div>
+							</div>
+						</div>
+						<div className="postal-code">
+							<label htmlFor="PostalCode">Postal Code</label>
+							<div className="input-container">
+								<input className="required" id="PostalCode" type="text" name="PostalCode"/>
+							</div>
+						</div>
+					</form>
+				</div>
+			),
+			options: ["Update CC", "Cancel"],
+			chatDisabled: true,
+			path: (params) => {
+				if (params.userInput == 'Update CC') {
+					return "show_credit_details";
+				} else if (params.userInput == 'UseCOF'){
+					return "show_credit_card_form_for_chat";
+				}
+			},
+		},
+		show_credit_details: {
+			message: (params) => {
+				const messages = [
+					"Your Payment information updated ...",
+					"Validating ID requirement..."
+				];
+				
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("show_checkin_details_ID_verify");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+		},
+
+		show_checkin_details_ID_verify: {
+			message: (params) => {
+				const messages = [
 					"Looks like we need to verify your Photo ID",
 					"I've sent a verification link to your registered mobile",
 					"Let us know once you have completed the verification!!"
@@ -152,8 +254,6 @@ function App() {
 
 		check_box_room_preference_capture: {
 			checkboxes: {items: ["High Floor", "Low Floor", "Near Elevator", "Lake View"], min:0, max: 3},
-			function: (params: Params) => 
-				alert(`Let me check availability based on your preferences...\n ${JSON.stringify(params.userInput)}!`),
 			chatDisabled: true,
 			path: "check_availability",
 		},
