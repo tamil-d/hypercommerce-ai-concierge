@@ -62,7 +62,7 @@ export const DefaultSettings: Settings = {
 		showCount: true,
 	},
 	audio: {
-		disabled: true,
+		disabled: false,
 		defaultToggledOn: false,
 		language: "en-US",
 		voiceNames: ["Microsoft David - English (United States)", "Alex (English - United States)"],
