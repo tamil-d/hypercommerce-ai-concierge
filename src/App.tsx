@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback , useEffect, useState } from "react";
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
 import { Params } from "./types/Params";
@@ -7,11 +7,48 @@ import ChatBotProvider from "./context/ChatBotContext";
 // Speech synthesis utility
 const useSpeech = () => {
 	const synth = window.speechSynthesis;
-	const speak = useCallback((text: string) => {
-	  synth.cancel(); // Stop current speech
-	  const utterance = new SpeechSynthesisUtterance(text);
-	  synth.speak(utterance);
+	const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+    
+	useEffect(() => {
+		const loadVoices = () => {
+			const availableVoices = synth.getVoices();
+			setVoices(availableVoices);
+		};
+    
+		// Some browsers load voices asynchronously
+		if (synth.onvoiceschanged !== undefined) {
+			synth.onvoiceschanged = loadVoices;
+		}
+    
+		loadVoices();
 	}, [synth]);
+    
+	const speak = useCallback(
+		(text: string) => {
+			synth.cancel(); // Stop current speech
+			const utterance = new SpeechSynthesisUtterance(text);
+    
+			// Select a female voice (you can refine this based on language or name)
+			const femaleVoice = voices.find(
+				(voice) =>
+					voice.name.toLowerCase().includes("female") ||
+              voice.name.toLowerCase().includes("woman")
+			) || voices.find((voice) => voice.name.toLowerCase().includes("google us english"));
+    
+			if (femaleVoice) {
+				utterance.voice = femaleVoice;
+			}
+    
+			// Customize pitch, rate, and volume
+			utterance.pitch = 1.2; // 0 to 2 (default is 1)
+			utterance.rate = 1; // 0.1 to 10 (default is 1)
+			utterance.volume = 1; // 0 to 1 (default is 1)
+    
+			synth.speak(utterance);
+		},
+		[synth, voices]
+	);
+    
 	return { speak };
 };
  
@@ -24,7 +61,7 @@ function App() {
 			message: (params) => {
 				const messages = [
 					"Hi I am your Bonvoy AI Concierge!" ,
-					"You have an upcoming Reservation (1234567) at the Bethesda Marriott" ,
+					"You have an upcoming Reservation at the Bethesda Marriott" ,
 					"Do you wish to check in?"
 				];
 				
@@ -60,10 +97,10 @@ function App() {
 				const messages = [
 					"Here are your check-in details:",
 					"Check in time: 3:00pm",
-					"Card on file: VISA ; ending with 5678; 12/28",
 					"Room preference: King Room, Near Elevator, Extra Pillows",
+					"The card on file I have is a VISA card ending with 5 6 7 8",
 					"Looks like we need to verify your Photo ID",
-					"We have sent a verification link to your registered mobile",
+					"I've sent a verification link to your registered mobile",
 					"Let us know once you have completed the verification!!"
 				];
 				
@@ -90,7 +127,7 @@ function App() {
 		show_room_assignment: {
 			message: (params) => {
 				const messages = [
-					"Verification Completed successfully...",
+					"Thanks! Verification Completed successfully...",
 					"You're all set! ",
 					"Your Room number is 5 0 4",
 					"It's a Deluxe King." ,
@@ -129,9 +166,9 @@ function App() {
 					"Assigning it now....",
 					"You're all set! ",
 					"I added the mobile key to your Bonvoy App",
-					"Your Room 1 5 0 2. ",
+					"Your new Room is 1 5 0 2. ",
 					"Thank you for being a Platinum Elite Member!! ",
-					"We hope you enjoy your welcome gift basket in your room!",
+					"We hope you enjoy your welcome gift!",
 				];
 	
 				messages.forEach((msg, index) => {
