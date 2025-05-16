@@ -39,8 +39,8 @@ const UserMessage = ({
 
 	// styles for user bubble
 	const userBubbleStyle: CSSProperties = {
-		backgroundColor: settings.general?.primaryColor,
-		color: "#fff",
+		backgroundColor:"#ffb995",
+		color: "#fff", 
 		maxWidth: settings.userBubble?.showAvatar ? "65%" : "70%",
 		...styles.userBubbleStyle,
 	};
