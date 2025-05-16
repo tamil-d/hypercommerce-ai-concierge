@@ -223,6 +223,10 @@ function App() {
 
 	return (
 		<ChatBotProvider>
+			<div className="colorstrip">
+
+				<img src="../assets/mi_logo1.png" alt="Human Avatar" class="logo" />
+			</div>
 			<div id="root-inner" style={{
 				display: "flex",
 				flexDirection: "row",
