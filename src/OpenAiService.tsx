@@ -1,9 +1,7 @@
 // openaiService.ts
 import axios from 'axios';
 
-const OPENAI_API_KEY = 'sk-proj-Pf6KCYilYLt1QH-2lH4vUkymeMVgn4MDTXeNhsQep9WsEdBFes2K'+
-'-2vp6V9gkRTUVYhNjKFvRCT3BlbkFJBTPC-us2nLwbDjRvD1BCWhgGzSPR2X6l4UtH-'+
-'SngwJGZ6CQQCl-HDafUtENZmH4lPbSFMPSI8A'; // Replace with your actual key
+const OPENAI_API_KEY = 'dummy'; 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 export const getChatbotResponse = async (userInput: string): Promise<string> => {
