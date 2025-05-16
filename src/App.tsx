@@ -1,7 +1,8 @@
 import React, { useCallback , useEffect, useState } from "react";
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
-import ChatBotProvider from "./context/ChatBotContext"; 
+import ChatBotProvider from "./context/ChatBotContext";
+import { getChatbotResponse } from './OpenAiService';
 
 // Speech synthesis utility
 const useSpeech = () => {
@@ -269,6 +270,7 @@ function App() {
 					"Your new Room is 1 5 0 2. ",
 					"Thank you for being a Platinum Elite Member!! ",
 					"We hope you enjoy your welcome gift!",
+					" :-) "
 				];
 	
 				messages.forEach((msg, index) => {
@@ -310,10 +312,12 @@ function App() {
 	
 		loop: {
 			message: (params) => {
-				setTimeout(() => {
-					const message = "I'm here if you need anything else!";
-					params.injectMessage(message);
-					speak(message);
+				setTimeout(async () => {
+					const message = "generate a greeting message with 2 to 3 sentences only - "+
+					"from the AI concierge assitant to the guest hoping pleasure stay.";
+					const botResponse = await getChatbotResponse(message);
+					params.injectMessage(botResponse);
+					speak(botResponse);
 				}, 500);
 			},
 			path: "loop",
