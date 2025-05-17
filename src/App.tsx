@@ -268,7 +268,7 @@ function App() {
 					"You're all set! ",
 					"Your new Room is 7 0 2. ",
 					"I added the mobile key to your Bonvoy App",
-					"Thank you for being a Platinum Elite Member!! ",
+					"Thank you for being a Platinum Elite Member and enjoy your welcome gift!! ",
 					"We hope you enjoy your welcome gift!",
 				
 				];
@@ -314,7 +314,7 @@ function App() {
 			message: (params) => {
 				setTimeout(async () => {
 					const message = "User dont have any input this time. " + 
-					"AI Assistant can welcome the user guest to the property" ;
+					"AI Assistant can thank the user for choosing the property" ;
 					const botResponse = await getChatbotResponse(message);
 					params.injectMessage(botResponse);
 					speak(botResponse);
