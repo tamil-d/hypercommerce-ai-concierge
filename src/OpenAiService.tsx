@@ -13,7 +13,7 @@ export const getChatbotResponse = async (userInput: string): Promise<string> => 
 			{
 				model: 'gpt-3.5-turbo',
 				messages: [
-					{ role: 'system', content: 'You are a helpful assistant.' },
+					{ role: 'system', content: 'You are a frontdesk agent at the Bethesda Marriott.' },
 					{ role: 'user', content: prompt }
 				],
 				temperature: 0.7,

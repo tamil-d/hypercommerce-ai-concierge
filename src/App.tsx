@@ -87,7 +87,7 @@ function App() {
 				if (params.userInput == 'Yes') {
 					return "show_checkin_details";
 				} else {
-					return "ask_what_else_to_help";
+					return "airepsonse";
 				}
 			},
 		},
@@ -95,7 +95,7 @@ function App() {
 		show_checkin_details: {
 			message: (params) => {
 				const messages = [
-					"Here are your check-in details:",
+					"Ok lets review your check-in details:",
 					"Check in time: 3:00pm",
 					"Room preference: King Room, Near Elevator, Extra Pillows",
 					"The card on file I have is a VISA card ending with 5 6 7 8",
@@ -180,7 +180,7 @@ function App() {
 		show_credit_details: {
 			message: (params) => {
 				const messages = [
-					"Your Payment information updated ...",
+					"Your Payment information has been updated!",
 					"Validating ID requirement..."
 				];
 				
@@ -202,9 +202,9 @@ function App() {
 		show_checkin_details_ID_verify: {
 			message: (params) => {
 				const messages = [
-					"Looks like we need to verify your Photo ID",
+					"Great, now we need to verify your Photo ID",
 					"I've sent a verification link to your registered mobile",
-					"Let us know once you have completed the verification!!"
+					"Let me know once you have completed the verification!!"
 				];
 				
 				messages.forEach((msg, index) => {
@@ -231,7 +231,7 @@ function App() {
 			message: (params) => {
 				const messages = [
 					"Thanks! Verification Completed successfully...",
-					"You're all set! ",
+					"You're all set! Here are the details... ",
 					"Your Room number is 5 0 4",
 					"It's a Deluxe King." ,
 					"Do you have any preferences to change? "
@@ -254,7 +254,7 @@ function App() {
 		},
 
 		check_box_room_preference_capture: {
-			checkboxes: {items: ["High Floor", "Low Floor", "Near Elevator", "Lake View"], min:0, max: 3},
+			checkboxes: {items: ["High Floor", "Low Floor", "Near Elevator", "Pool View"], min:0, max: 3},
 			chatDisabled: true,
 			path: "check_availability",
 		},
@@ -266,11 +266,11 @@ function App() {
 					"Good news! I found a room with your preferences.",
 					"Assigning it now....",
 					"You're all set! ",
+					"Your new Room is 7 0 2. ",
 					"I added the mobile key to your Bonvoy App",
-					"Your new Room is 1 5 0 2. ",
 					"Thank you for being a Platinum Elite Member!! ",
 					"We hope you enjoy your welcome gift!",
-					" :-) "
+				
 				];
 	
 				messages.forEach((msg, index) => {
@@ -280,7 +280,8 @@ function App() {
 						// After the last message, trigger the path transition
 						if (index === messages.length - 1) {
 							setTimeout(() => {
-								params.goToPath("loop");
+								params.userInput="";
+								params.goToPath("ask_what_else_to_help");
 							}, 1000); // Optional buffer after last message
 						}
 					}, index * 4000);
@@ -291,7 +292,7 @@ function App() {
 		ask_what_else_to_help: {
 			message: (params) => {
 				const messages = [
-					"No problem! Is there anything else I can help you with?"
+					"Ok! if you need any help let me know"
 				];
 	
 				messages.forEach((msg, index) => {
@@ -313,14 +314,25 @@ function App() {
 		loop: {
 			message: (params) => {
 				setTimeout(async () => {
-					const message = "generate a greeting message with 2 to 3 sentences only - "+
-					"from the AI concierge assitant to the guest hoping pleasure stay.";
+					const message = "Users Input/response/question is : " + params.userInput ;
 					const botResponse = await getChatbotResponse(message);
 					params.injectMessage(botResponse);
 					speak(botResponse);
 				}, 500);
 			},
 			path: "loop",
+		},
+
+		airepsonse: {
+			message: (params) => {
+				setTimeout(async () => {
+					const message = "Users Input/response/question is : " + params.userInput ;
+					const botResponse = await getChatbotResponse(message);
+					params.injectMessage(botResponse);
+					speak(botResponse);
+				}, 500);
+			},
+			path: "airepsonse",
 		},
 	
 	};
