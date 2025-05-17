@@ -280,8 +280,7 @@ function App() {
 						// After the last message, trigger the path transition
 						if (index === messages.length - 1) {
 							setTimeout(() => {
-								params.userInput="";
-								params.goToPath("ask_what_else_to_help");
+								params.goToPath("loop_no_user_input");
 							}, 1000); // Optional buffer after last message
 						}
 					}, index * 4000);
@@ -311,6 +310,19 @@ function App() {
 			path: "loop",
 		},
 	
+		loop_no_user_input: {
+			message: (params) => {
+				setTimeout(async () => {
+					const message = "User dont have any input this time. " + 
+					"AI Assistant can welcome the user guest to the property" ;
+					const botResponse = await getChatbotResponse(message);
+					params.injectMessage(botResponse);
+					speak(botResponse);
+				}, 500);
+			},
+			path: "loop",
+		},
+
 		loop: {
 			message: (params) => {
 				setTimeout(async () => {
