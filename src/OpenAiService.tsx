@@ -1,7 +1,7 @@
 // openaiService.ts
 import axios from 'axios';
 
-const OPENAI_API_KEY = 'dummy';
+const OPENAI_API_KEY = 'null';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 export const getChatbotResponse = async (userInput: string): Promise<string> => {
@@ -13,9 +13,12 @@ export const getChatbotResponse = async (userInput: string): Promise<string> => 
 			{
 				model: 'gpt-3.5-turbo',
 				messages: [
-					{ role: 'system', content: 'You are a frontdesk agent at the Bethesda Marriott. ' + 
+					{ role: 'system', content: 'You are a frontdesk agent at the Marriott Marquis DC. ' + 
                         'User is trying enquire about the hotel and its amenities, Or ' + 
                         'housekeeping requests, itenary plan and so on. ' + 
+						'entertainment tonight is jazz by soulfire in the ballroom' + 
+						'tickets are $75 and you can reserve and send the tickets ' + 
+						'guests can show the qr code once reserved for the show ' + 
                         'so provide a answer based on user prompt keeping this context' },
 					{ role: 'user', content: prompt }
 				],

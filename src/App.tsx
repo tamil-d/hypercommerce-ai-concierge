@@ -60,9 +60,11 @@ function App() {
 		start: {
 			message: (params) => {
 				const messages = [
-					"Hi I am your Bonvoy AI Concierge!" ,
-					"You have an upcoming Reservation at the Bethesda Marriott" ,
-					"Do you wish to check in?"
+					"Welcome! I hope your flight was enjoyable" ,
+					"I have arranged for your transportation to the hotel." ,
+					"A black Mercury Grand Marquis will be at the passenger pick up zone.",
+					" The chauffer will have a placard with your name.",
+					"Would you like to check in now?",
 				];
 				
 				messages.forEach((msg, index) => {
@@ -88,6 +90,18 @@ function App() {
 					return "show_checkin_details";
 				} else {
 					return "airepsonse";
+				}
+			},
+		},
+
+		capture_recommendation_response: {
+			options: ["Yes", "Maybe Later"],
+			chatDisabled: true,
+			path: (params) => {
+				if (params.userInput == 'Yes') {
+					return "show_entertainment_details";
+				} else {
+					return "show_checkout";
 				}
 			},
 		},
@@ -226,7 +240,63 @@ function App() {
 			options: ["I'm Done !!!"],
 			chatDisabled: true,
 			path: "show_room_assignment",
+
+			
 		},
+		capture_recommendations: {
+			options: ["Thanks!"],
+			chatDisabled: true,
+			path: "show_recommendations",
+			
+		},
+		
+		capture_checkout: {
+			options: ["I will!"],
+			chatDisabled: true,
+			path: "show_checkout",
+			
+		},
+
+		capture_checkout2: {
+			options: ["Yes that sounds great"],
+			chatDisabled: true,
+			path: "show_finalcontact",
+			
+		},
+
+		capture_checkout3: {
+			options: ["I am already having a great time!"],
+			chatDisabled: true,
+			path: "show_departure",
+			
+		},
+
+		show_recommendations: {
+			message: (params) => {
+				const messages = [
+					"By the way, I have some recommendations for you:",
+					"We have a jazz performance by Soulfire in the main ballroom.",
+					 "The show starts in an hour, and tickets cost $75 each.",
+					  "Would you like to reserve tickets?",
+
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_recommendation_response");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+			
+		},
+
 		show_room_assignment: {
 			message: (params) => {
 				const messages = [
@@ -254,7 +324,7 @@ function App() {
 		},
 
 		check_box_room_preference_capture: {
-			checkboxes: {items: ["High Floor", "Low Floor", "Near Elevator", "Pool View"], min:0, max: 3},
+			checkboxes: {items: ["High Floor", "Near Stairs", "Near Elevator", "Pool View"], min:0, max: 3},
 			chatDisabled: true,
 			path: "check_availability",
 		},
@@ -265,10 +335,9 @@ function App() {
 				const messages = [
 					"Good news! I found a room with your preferences.",
 					"Assigning it now....",
-					"You're all set! ",
 					"Your new Room is 7 0 2. ",
 					"I added the mobile key to your Bonvoy App",
-					"Thank you for being a Platinum Elite Member and enjoy your welcome gift!! ",
+					"Thank you for being a Platinum Elite Member!! ",
 					"We hope you enjoy your welcome gift!",
 				
 				];
@@ -280,13 +349,109 @@ function App() {
 						// After the last message, trigger the path transition
 						if (index === messages.length - 1) {
 							setTimeout(() => {
-								params.goToPath("loop_no_user_input");
+								params.goToPath("capture_recommendations");
 							}, 1000); // Optional buffer after last message
 						}
 					}, index * 4000);
 				});
 			},
 		},
+
+		show_entertainment_details: {
+			message: (params) => {
+				const messages = [
+					"Great! Let me reserve that now..... ",
+					"Done! I've sent the ticket to your email... ",
+					"Please show the QR code at the entrance.",
+					"Enjoy the show!!",
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_checkout");
+							}, 1000); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+			
+		},
+
+		show_checkout: {
+			message: (params) => {
+				const messages = [
+					"Please have a lovely evening",
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_checkout3");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+			
+		},
+
+		show_departure: {
+			message: (params) => {
+				const messages = [
+					"I see you are checking out today. would you like a 4pm late checkout and help with your luggage?",
+					
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("capture_checkout2");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+			
+		},
+
+		show_finalcontact: {
+			message: (params) => {
+				const messages = [
+					"Perfect..The associate will accompany you to your car and load the luggage",
+					"When you checkout,you will receive your final folio by email.",
+					"Thank you for staying with us. I hope you enjoyed your stay!",
+					
+				];
+	
+				messages.forEach((msg, index) => {
+					setTimeout(() => {
+						params.injectMessage(msg);
+						speak(msg);
+						// After the last message, trigger the path transition
+						if (index === messages.length - 1) {
+							setTimeout(() => {
+								params.goToPath("loop_no_user_input");
+							}, 900); // Optional buffer after last message
+						}
+					}, index * 4000);
+				});
+			},
+			
+		},
+
 
 		ask_what_else_to_help: {
 			message: (params) => {
