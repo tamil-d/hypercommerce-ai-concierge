@@ -41,7 +41,7 @@ const useSpeech = () => {
     
 			// Customize pitch, rate, and volume
 			utterance.pitch = 1.2; // 0 to 2 (default is 1)
-			utterance.rate = 1; // 0.1 to 10 (default is 1)
+			utterance.rate = 1.05; // 0.1 to 10 (default is 1)
 			utterance.volume = 1; // 0 to 1 (default is 1)
     
 			synth.speak(utterance);
@@ -62,8 +62,9 @@ function App() {
 				const messages = [
 					"Welcome! I hope your flight was enjoyable" ,
 					"I have arranged for your transportation to the hotel." ,
-					"A black Mercury Grand Marquis will be at the passenger pick up zone.",
+					"A black Lincoln Navigator will be at the passenger pick up.",
 					" The chauffer will have a placard with your name.",
+					" When you arrive, the staff will assist you with your luggage.",
 					"Would you like to check in now?",
 				];
 				
@@ -265,7 +266,7 @@ function App() {
 		},
 
 		capture_checkout3: {
-			options: ["I am already having a great time!"],
+			options: ["I am having a great stay here!"],
 			chatDisabled: true,
 			path: "show_departure",
 			
@@ -303,8 +304,10 @@ function App() {
 					"Thanks! Verification Completed successfully...",
 					"You're all set! Here are the details... ",
 					"Your Room number is 5 0 4",
-					"It's a Deluxe King." ,
-					"Do you have any preferences to change? "
+					"It's a King Studio" ,
+					"I added the mobile key to your Bonvoy App",
+					"Thank you for being a Platinum Elite Member!! ",
+					"We hope you enjoy your welcome gift!",
 				];
 	
 				messages.forEach((msg, index) => {
@@ -314,7 +317,7 @@ function App() {
 						// After the last message, trigger the path transition
 						if (index === messages.length - 1) {
 							setTimeout(() => {
-								params.goToPath("check_box_room_preference_capture");
+								params.goToPath("capture_recommendations");
 							}, 900); // Optional buffer after last message
 						}
 					}, index * 4000);
@@ -432,7 +435,6 @@ function App() {
 				const messages = [
 					"Perfect..The associate will accompany you to your car and load the luggage",
 					"When you checkout,you will receive your final folio by email.",
-					"Thank you for staying with us. I hope you enjoyed your stay!",
 					
 				];
 	
@@ -479,7 +481,7 @@ function App() {
 			message: (params) => {
 				setTimeout(async () => {
 					const message = "User dont have any input this time. " + 
-					"AI Assistant can thank the user for choosing the property" ;
+					"AI Assistant can thank the user for choosing to stay at the property an wish them a safe flight" ;
 					const botResponse = await getChatbotResponse(message);
 					params.injectMessage(botResponse);
 					speak(botResponse);
